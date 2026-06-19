@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Common AI crawlers — allow main site, block admin
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+
+Sitemap: https://coloursplash-studio.web.app/sitemap.xml
