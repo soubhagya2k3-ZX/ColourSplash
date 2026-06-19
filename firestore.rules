@@ -1,0 +1,92 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Validation Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'coloursplash.studio.01@gmail.com';
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidPortfolioItem(data) {
+      return data.keys().hasAll(['title', 'description', 'image_url', 'project_link', 'category', 'created_at', 'updated_at']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.description is string && data.description.size() > 0 && data.description.size() <= 2000 &&
+             data.image_url is string && data.image_url.size() > 0 && data.image_url.size() <= 1000 &&
+             data.project_link is string && data.project_link.size() > 0 && data.project_link.size() <= 1000 &&
+             data.category is string && data.category.size() > 0 && data.category.size() <= 50;
+    }
+
+    function isValidServiceItem(data) {
+      return data.keys().hasAll(['title', 'icon', 'description', 'created_at', 'updated_at']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.icon is string && data.icon.size() > 0 && data.icon.size() <= 100 &&
+             data.description is string && data.description.size() > 0 && data.description.size() <= 2000;
+    }
+
+    function isCreateAction() {
+      return incoming().created_at == request.time && incoming().updated_at == request.time;
+    }
+
+    // Portfolio Items Rules
+    match /portfolio_items/{itemId} {
+      // Public read access for portfolio items
+      allow read: if true;
+      
+      // Only authenticated admin can create, update, delete
+      allow create: if isAdmin() 
+                    && isValidId(itemId) 
+                    && isValidPortfolioItem(incoming()) 
+                    && isCreateAction();
+                    
+      allow update: if isAdmin() 
+                    && isValidId(itemId) 
+                    && isValidPortfolioItem(incoming())
+                    && incoming().created_at == existing().created_at
+                    && incoming().updated_at == request.time;
+                    
+      allow delete: if isAdmin() && isValidId(itemId);
+    }
+    
+    // Services Rules
+    match /services/{serviceId} {
+      // Public read access for services
+      allow read: if true;
+      
+      // Only authenticated admin can create, update, delete
+      allow create: if isAdmin() 
+                    && isValidId(serviceId) 
+                    && isValidServiceItem(incoming()) 
+                    && isCreateAction();
+                    
+      allow update: if isAdmin() 
+                    && isValidId(serviceId) 
+                    && isValidServiceItem(incoming())
+                    && incoming().created_at == existing().created_at
+                    && incoming().updated_at == request.time;
+                    
+      allow delete: if isAdmin() && isValidId(serviceId);
+    }
+  }
+}

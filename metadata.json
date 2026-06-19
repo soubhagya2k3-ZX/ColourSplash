@@ -1,0 +1,8 @@
+{
+  "name": "Colour Splash Studio Applet",
+  "description": "A modern, high-performance, animated website frontend for a digital marketing and creative agency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

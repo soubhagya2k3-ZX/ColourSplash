@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "PortfolioItem": {
+      "title": "PortfolioItem",
+      "description": "A portfolio item displayed on the public site and managed in the admin panel.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "image_url": { "type": "string" },
+        "project_link": { "type": "string" },
+        "category": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["title", "description", "image_url", "project_link", "category"]
+    },
+    "ServiceItem": {
+      "title": "ServiceItem",
+      "description": "A service offering displayed on the public site and managed in the admin panel.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "icon": { "type": "string" },
+        "description": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["title", "icon", "description"]
+    }
+  },
+  "firestore": {
+    "/portfolio_items/{itemId}": {
+      "schema": "PortfolioItem",
+      "description": "Collection of all portfolio items"
+    },
+    "/services/{serviceId}": {
+      "schema": "ServiceItem",
+      "description": "Collection of all service items"
+    }
+  }
+}

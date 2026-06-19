@@ -1,0 +1,257 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+@utility pb-safe-area {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --color-slate-50: #f9f2de;
+  --color-slate-100: #eee8d5;
+  --color-slate-200: #e2dcca;
+  --color-slate-300: #d1cbb0;
+  --color-slate-400: #93a1a1;
+  --color-slate-500: #839496;
+  --color-slate-600: #657b83;
+  --color-slate-700: #586e75;
+  --color-slate-800: #073642;
+  --color-slate-900: #002b36;
+  --color-slate-950: #001f27;
+
+  --color-white: #fdf6e3;
+
+  --color-orange-400: #b58900;
+  --color-orange-500: #cb4b16;
+  --color-purple-500: #d33682;
+  --color-purple-600: #6c71c4;
+
+  --color-primary-400: #a855f7;
+  --color-primary-500: #ec4899;
+  --color-primary-600: #3b82f6;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-gradient: background-pan 3s linear infinite;
+
+  @keyframes background-pan {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate3d(100px, 80px, 0) scale(1.2) rotate(30deg); }
+    66% { transform: translate3d(-80px, -60px, 0) scale(0.9) rotate(-20deg); }
+  }
+
+  @keyframes float-slow-reverse {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate3d(-120px, -80px, 0) scale(1.3) rotate(-35deg); }
+    66% { transform: translate3d(100px, 100px, 0) scale(0.85) rotate(25deg); }
+  }
+
+  @keyframes float-slow-alt {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate3d(140px, 120px, 0) scale(1.15) rotate(60deg); }
+    66% { transform: translate3d(-100px, -80px, 0) scale(1.2) rotate(-45deg); }
+  }
+
+  /* Hero floating icons — runs entirely on the GPU, no Framer reconciliation */
+  @keyframes hero-float-1 {
+    0%, 100% { transform: translate3d(0, -30px, 0) rotate(-15deg) scale(1); }
+    50%      { transform: translate3d(0,  30px, 0) rotate( 15deg) scale(1.1); }
+  }
+  @keyframes hero-float-2 {
+    0%, 100% { transform: translate3d(0,  20px, 0) rotate( 15deg) scale(1); }
+    50%      { transform: translate3d(0, -20px, 0) rotate(-15deg) scale(1.2); }
+  }
+  @keyframes hero-float-3 {
+    0%, 100% { transform: translate3d( 10px, -15px, 0) rotate(-5deg); }
+    50%      { transform: translate3d(-10px,  15px, 0) rotate( 5deg); }
+  }
+  @keyframes hero-float-4 {
+    0%, 100% { transform: translate3d(0,  0,  0) scale(1); }
+    50%      { transform: translate3d(10px, 40px, 0) scale(1.2); }
+  }
+  @keyframes hero-card-float-a {
+    0%, 100% { transform: translate3d(0, -15px, 0) rotate(-2deg); }
+    50%      { transform: translate3d(0,  15px, 0) rotate( 2deg); }
+  }
+  @keyframes hero-card-float-b {
+    0%, 100% { transform: translate3d(-10px,  15px, 0) rotate( 2deg); }
+    50%      { transform: translate3d( 10px, -15px, 0) rotate(-2deg); }
+  }
+  @keyframes spin-slow {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Gentle breathing + wiggle for the Hero palette badge icon */
+  @keyframes badge-wiggle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25%      { transform: scale(1.12) rotate(-8deg); }
+    50%      { transform: scale(1.05) rotate(0deg); }
+    75%      { transform: scale(1.12) rotate(8deg); }
+  }
+
+  /* Cinematic finale — vertical scanline that drifts left → right every 8s */
+  @keyframes csa-scanline {
+    0%   { transform: translate3d(-10vw, 0, 0); opacity: 0; }
+    10%  { opacity: 0.55; }
+    90%  { opacity: 0.55; }
+    100% { transform: translate3d(110vw, 0, 0); opacity: 0; }
+  }
+}
+
+@layer base {
+  html {
+    position: relative;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased font-sans selection:bg-purple-500/20 selection:text-purple-900;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /*
+    Film grain overlay.
+    OLD: mix-blend-mode: multiply at z:9999 forced compositing on every paint
+         (every scroll, every animation frame) -> major GPU/CPU cost.
+    NEW: simple opacity-only fixed overlay. Same visual effect, no blend mode,
+         GPU treats it as a cheap static layer that never invalidates.
+  */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    /* mix-blend-mode intentionally removed — opacity alone gives the texture */
+  }
+
+  /*
+    content-visibility: auto lets the browser SKIP layout, paint, and
+    compositing work for sections that are off-screen. Massive scroll-perf
+    win on long pages. contain-intrinsic-size reserves space so CLS stays at 0.
+
+    Scope: applied via .cv-skip helper class instead of `section[id]` so that
+    short pages (Portfolio, Contact) — which mount and reflow all at once —
+    don't pay an extra layout-skip-then-promote dance on their first paint.
+    Only Home opts in to the optimisation, where the long scroll genuinely
+    benefits from skipping off-screen sections.
+  */
+  .cv-skip {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
+  }
+  section[id] {
+    position: relative;
+    scroll-margin-top: 100px;
+  }
+  #home,
+  section#home {
+    content-visibility: visible;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full border-2 border-slate-100;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Utilities */
+@layer utilities {
+  /*
+    motion-optimize is now a "promote-on-demand" hint. We avoid persistent
+    will-change (which leaks GPU memory). Use this class only on actively
+    animating elements; remove it once an animation completes.
+  */
+  .motion-optimize {
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Glass surfaces — kept, but feathered to reduce backdrop-filter cost */
+  .glass {
+    @apply bg-slate-100/85 border border-slate-300/40 shadow-sm pointer-events-auto;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .glass-card {
+    @apply bg-white/95 border border-slate-200 shadow-xl shadow-slate-200/40 pointer-events-auto;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-purple-600;
+  }
+
+  /* Hero icon helpers — pure CSS replacements for Framer infinite loops */
+  .hero-anim-1 { animation: hero-float-1 15s ease-in-out infinite; }
+  .hero-anim-2 { animation: hero-float-2 15s ease-in-out infinite; animation-delay: -5s; }
+  .hero-anim-3 { animation: hero-float-3 15s ease-in-out infinite; animation-delay: -7s; }
+  .hero-anim-4 { animation: hero-float-4 15s ease-in-out infinite; animation-delay: -3s; }
+  .hero-card-a { animation: hero-card-float-a 15s ease-in-out infinite; }
+  .hero-card-b { animation: hero-card-float-b 15s ease-in-out infinite; animation-delay: -2s; }
+  .spin-slow   { animation: spin-slow 18s linear infinite; }
+  .badge-wiggle { animation: badge-wiggle 4s ease-in-out infinite; }
+
+  /* Cinematic finale scanline — used in the footer's "Final Frame" block */
+  .csa-scanline {
+    animation: csa-scanline 8s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+}
+
+/* Reduced motion: disable all non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee,
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .hero-anim-1, .hero-anim-2, .hero-anim-3, .hero-anim-4,
+  .hero-card-a, .hero-card-b, .spin-slow, .csa-scanline, .badge-wiggle {
+    animation: none !important;
+  }
+  .csa-ambient { display: none !important; }
+}

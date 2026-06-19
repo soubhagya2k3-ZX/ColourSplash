@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Admin Panel | ColourSplash Studio</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Admin panel for ColourSplash Studio — manage portfolio items and services." />
+    <meta name="author" content="ColourSplash Studio" />
+    
+    <!-- Theme & Color Scheme -->
+    <meta name="theme-color" content="#f9f2de" />
+    <meta name="color-scheme" content="light" />
+    
+    <!-- Security & Privacy -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://coloursplash-studio.web.app/admin/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+    
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Critical inline CSS -->
+    <style>
+      :root { color-scheme: light; }
+      html, body { margin: 0; padding: 0; background: #f9f2de; color: #002b36; min-height: 100%; }
+      html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+      body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+      #root { min-height: 100vh; }
+      .cs-initial-loader { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #f9f2de; z-index: 1; pointer-events: none; }
+      .cs-initial-loader__dot { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #a855f7 100%); animation: cs-pulse 1.4s ease-in-out infinite; }
+      @keyframes cs-pulse { 0%, 100% { transform: scale(0.85); opacity: 0.6; } 50% { transform: scale(1); opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) { .cs-initial-loader__dot { animation: none; } }
+    </style>
+    
+    <!-- Ambient CSS -->
+    <style>
+      .csa-ambient{--csa-c1:#f97316;--csa-c2:#ec4899;--csa-c3:#a855f7;--csa-c4:#3b82f6;--csa-c5:#14b8a6;--csa-pencil-body:#e6c068;--csa-pencil-stripe:#b88a30;--csa-pencil-tip:#f4d68a;--csa-pencil-graphite:#1f2937;--csa-pencil-eraser:#ef9a9a;--csa-palette-base:#f5e6c5;--csa-palette-edge:#b88a30;--csa-palette-hole:#f9f2de;--csa-strength:1;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+      @media(prefers-reduced-data:reduce){.csa-ambient{display:none!important}}
+      @media(max-width:640px){.csa-ambient .csa-mobile-hide{display:none!important}}
+      .csa-ambient>*{position:absolute;will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translate3d(0,0,0)}
+      .csa-pencil{width:clamp(60px,7vw,90px);height:clamp(60px,7vw,90px);opacity:0}
+      .csa-pencil--1{top:14vh;left:-12vw;animation:csa-pencil-glide 38s linear infinite}
+      .csa-pencil--2{top:62vh;left:-12vw;transform:scale(.75);animation:csa-pencil-glide 46s linear infinite;animation-delay:-22s}
+      @keyframes csa-pencil-glide{0%{transform:translate3d(0,0,0) rotate(-12deg);opacity:0}8%{opacity:calc(.30*var(--csa-strength))}50%{transform:translate3d(60vw,-2vh,0) rotate(4deg)}92%{opacity:calc(.30*var(--csa-strength))}100%{transform:translate3d(125vw,3vh,0) rotate(-8deg);opacity:0}}
+      .csa-palette{width:clamp(90px,11vw,130px);height:clamp(90px,11vw,130px);bottom:8vh;right:6vw;opacity:calc(.28*var(--csa-strength));animation:csa-palette-bob 9s ease-in-out infinite}
+      @keyframes csa-palette-bob{0%,100%{transform:translate3d(0,0,0) rotate(-3deg)}50%{transform:translate3d(0,-14px,0) rotate(3deg)}}
+      .csa-palette__blob{transform-origin:center;transform-box:fill-box;animation:csa-blob-pulse 4.4s ease-in-out infinite}
+      .csa-palette__blob--2{animation-duration:5.5s;animation-delay:-1.2s}.csa-palette__blob--3{animation-duration:4.8s;animation-delay:-2.5s}.csa-palette__blob--4{animation-duration:6.2s;animation-delay:-0.8s}
+      @keyframes csa-blob-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+      .csa-drop{width:16px;height:22px;top:-6vh;opacity:0;animation:csa-drop-fall linear infinite}
+      .csa-drop--1{left:8%;animation-duration:18s;animation-delay:0s}.csa-drop--2{left:24%;animation-duration:24s;animation-delay:-6s}.csa-drop--3{left:41%;animation-duration:21s;animation-delay:-12s}.csa-drop--4{left:58%;animation-duration:27s;animation-delay:-3s}.csa-drop--5{left:76%;animation-duration:19s;animation-delay:-10s}.csa-drop--6{left:91%;animation-duration:25s;animation-delay:-15s}
+      @keyframes csa-drop-fall{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}8%{opacity:calc(.32*var(--csa-strength))}50%{transform:translate3d(6px,55vh,0) scale(1)}92%{opacity:calc(.28*var(--csa-strength))}100%{transform:translate3d(-4px,115vh,0) scale(.75);opacity:0}}
+      .csa-particle{width:6px;height:6px;border-radius:50%;bottom:-2vh;opacity:0;animation:csa-particle-rise linear infinite}
+      .csa-particle--1{left:4%;background:var(--csa-c1);animation-duration:16s;animation-delay:0s}.csa-particle--2{left:13%;background:var(--csa-c2);animation-duration:22s;animation-delay:-7s}.csa-particle--3{left:22%;background:var(--csa-c3);animation-duration:19s;animation-delay:-12s}.csa-particle--4{left:31%;background:var(--csa-c4);animation-duration:24s;animation-delay:-3s}.csa-particle--5{left:39%;background:var(--csa-c5);animation-duration:17s;animation-delay:-9s}.csa-particle--6{left:48%;background:var(--csa-c1);animation-duration:26s;animation-delay:-15s}.csa-particle--7{left:57%;background:var(--csa-c2);animation-duration:18s;animation-delay:-1s}.csa-particle--8{left:66%;background:var(--csa-c3);animation-duration:23s;animation-delay:-8s}.csa-particle--9{left:75%;background:var(--csa-c4);animation-duration:20s;animation-delay:-14s}.csa-particle--10{left:84%;background:var(--csa-c5);animation-duration:25s;animation-delay:-4s}.csa-particle--11{left:92%;background:var(--csa-c1);animation-duration:21s;animation-delay:-11s}.csa-particle--12{left:97%;background:var(--csa-c3);animation-duration:28s;animation-delay:-6s}
+      @keyframes csa-particle-rise{0%{transform:translate3d(0,0,0) scale(.5);opacity:0}10%{opacity:calc(.42*var(--csa-strength))}50%{transform:translate3d(12px,-50vh,0) scale(1)}90%{opacity:calc(.18*var(--csa-strength))}100%{transform:translate3d(-8px,-115vh,0) scale(.4);opacity:0}}
+      .csa-orb{width:60vmin;height:60vmin;border-radius:50%;opacity:0;mix-blend-mode:normal}
+      .csa-orb--1{top:-20vmin;left:-20vmin;background:radial-gradient(circle at 30% 30%,rgba(249,115,22,0.22),transparent 65%);animation:csa-orb-drift-1 60s ease-in-out infinite}
+      .csa-orb--2{bottom:-25vmin;right:-25vmin;background:radial-gradient(circle at 70% 70%,rgba(168,85,247,0.20),transparent 65%);animation:csa-orb-drift-2 75s ease-in-out infinite;animation-delay:-25s}
+      .csa-orb--3{top:30vh;left:30vw;width:45vmin;height:45vmin;background:radial-gradient(circle at 50% 50%,rgba(236,72,153,0.16),transparent 65%);animation:csa-orb-drift-3 90s ease-in-out infinite;animation-delay:-45s}
+      @keyframes csa-orb-drift-1{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:calc(.55*var(--csa-strength))}50%{transform:translate3d(20vw,15vh,0) scale(1.15);opacity:calc(.40*var(--csa-strength))}}
+      @keyframes csa-orb-drift-2{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:calc(.50*var(--csa-strength))}50%{transform:translate3d(-25vw,-10vh,0) scale(0.9);opacity:calc(.65*var(--csa-strength))}}
+      @keyframes csa-orb-drift-3{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:calc(.35*var(--csa-strength))}50%{transform:translate3d(15vw,-20vh,0) scale(1.2);opacity:calc(.50*var(--csa-strength))}}
+      .csa-streak{width:clamp(160px,20vw,280px);height:4px;border-radius:4px;opacity:0;transform-origin:left center}
+      .csa-streak--1{top:28vh;left:-25vw;background:linear-gradient(90deg,transparent 0%,var(--csa-c1) 30%,var(--csa-c2) 70%,transparent 100%);animation:csa-streak-fly 28s linear infinite}
+      .csa-streak--2{top:70vh;left:-25vw;background:linear-gradient(90deg,transparent 0%,var(--csa-c3) 35%,var(--csa-c4) 65%,transparent 100%);animation:csa-streak-fly 36s linear infinite;animation-delay:-14s}
+      .csa-streak--3{top:48vh;left:-25vw;height:3px;background:linear-gradient(90deg,transparent 0%,var(--csa-c5) 50%,transparent 100%);animation:csa-streak-fly 32s linear infinite;animation-delay:-22s}
+      @keyframes csa-streak-fly{0%{transform:translate3d(0,0,0) rotate(-4deg) scaleX(0.4);opacity:0}10%{opacity:calc(.45*var(--csa-strength))}50%{transform:translate3d(60vw,-3vh,0) rotate(0deg) scaleX(1)}90%{opacity:calc(.45*var(--csa-strength))}100%{transform:translate3d(130vw,2vh,0) rotate(4deg) scaleX(0.4);opacity:0}}
+      .csa-spark{width:4px;height:4px;background:#ffffff;border-radius:50%;opacity:0;box-shadow:0 0 6px rgba(255,255,255,0.9),0 0 12px rgba(249,115,22,0.6)}
+      .csa-spark--1{top:12vh;left:6vw;animation:csa-spark-twinkle 5.5s ease-in-out infinite}.csa-spark--2{top:22vh;left:38vw;animation:csa-spark-twinkle 7.2s ease-in-out infinite;animation-delay:-2.0s}.csa-spark--3{top:35vh;left:78vw;animation:csa-spark-twinkle 6.0s ease-in-out infinite;animation-delay:-4.0s}.csa-spark--4{top:55vh;left:18vw;animation:csa-spark-twinkle 8.0s ease-in-out infinite;animation-delay:-1.5s}.csa-spark--5{top:68vh;left:62vw;animation:csa-spark-twinkle 5.0s ease-in-out infinite;animation-delay:-3.0s}.csa-spark--6{top:82vh;left:30vw;animation:csa-spark-twinkle 6.8s ease-in-out infinite;animation-delay:-2.5s}.csa-spark--7{top:45vh;left:92vw;animation:csa-spark-twinkle 7.5s ease-in-out infinite;animation-delay:-5.0s}.csa-spark--8{top:88vh;left:84vw;animation:csa-spark-twinkle 5.8s ease-in-out infinite;animation-delay:-3.5s}
+      @keyframes csa-spark-twinkle{0%,100%{transform:scale(0.4);opacity:0}45%{transform:scale(1);opacity:calc(.85*var(--csa-strength))}55%{transform:scale(1);opacity:calc(.85*var(--csa-strength))}}
+      @media(prefers-reduced-motion:reduce){.csa-ambient{display:none!important}}
+      .csa-ambient.csa-paused,.csa-ambient.csa-paused *{animation-play-state:paused!important}
+    </style>
+  </head>
+  <body>
+    <!-- Ambient Base Animation Layer -->
+    <div class="csa-ambient" aria-hidden="true">
+      <div class="csa-orb csa-orb--1 csa-mobile-hide"></div>
+      <div class="csa-orb csa-orb--2 csa-mobile-hide"></div>
+      <div class="csa-orb csa-orb--3 csa-mobile-hide"></div>
+      <span class="csa-streak csa-streak--1 csa-mobile-hide"></span>
+      <span class="csa-streak csa-streak--2 csa-mobile-hide"></span>
+      <span class="csa-streak csa-streak--3 csa-mobile-hide"></span>
+      <span class="csa-spark csa-spark--1"></span>
+      <span class="csa-spark csa-spark--2"></span>
+      <span class="csa-spark csa-spark--3"></span>
+      <span class="csa-spark csa-spark--4"></span>
+      <span class="csa-spark csa-spark--5"></span>
+      <span class="csa-spark csa-spark--6"></span>
+      <span class="csa-spark csa-spark--7"></span>
+      <span class="csa-spark csa-spark--8"></span>
+      <svg class="csa-pencil csa-pencil--1" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(0 36)">
+          <rect x="2"  y="2" width="8"  height="14" rx="2" fill="var(--csa-pencil-eraser)"/>
+          <rect x="10" y="2" width="4"  height="14"        fill="var(--csa-pencil-stripe)"/>
+          <rect x="14" y="2" width="46" height="14" rx="1" fill="var(--csa-pencil-body)"/>
+          <polygon points="60,2 72,9 60,16" fill="var(--csa-pencil-tip)"/>
+          <polygon points="68,5 78,9 68,13" fill="var(--csa-pencil-graphite)"/>
+        </g>
+      </svg>
+      <svg class="csa-pencil csa-pencil--2 csa-mobile-hide" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(0 36)">
+          <rect x="2"  y="2" width="8"  height="14" rx="2" fill="var(--csa-pencil-eraser)"/>
+          <rect x="10" y="2" width="4"  height="14"        fill="var(--csa-pencil-stripe)"/>
+          <rect x="14" y="2" width="46" height="14" rx="1" fill="var(--csa-pencil-body)"/>
+          <polygon points="60,2 72,9 60,16" fill="var(--csa-pencil-tip)"/>
+          <polygon points="68,5 78,9 68,13" fill="var(--csa-pencil-graphite)"/>
+        </g>
+      </svg>
+      <svg class="csa-palette" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 6 C24 6 6 25 6 48 C6 66 21 78 38 75 C44 74 46 70 46 65 C46 58 53 56 60 58 C76 63 94 54 94 36 C94 19 76 6 50 6 Z"
+              fill="var(--csa-palette-base)" stroke="var(--csa-palette-edge)" stroke-width="1.2"/>
+        <circle cx="34" cy="60" r="6.5" fill="var(--csa-palette-hole)"/>
+        <circle class="csa-palette__blob csa-palette__blob--1" cx="36" cy="26" r="6"   fill="var(--csa-c1)"/>
+        <circle class="csa-palette__blob csa-palette__blob--2" cx="58" cy="20" r="6.5" fill="var(--csa-c2)"/>
+        <circle class="csa-palette__blob csa-palette__blob--3" cx="76" cy="36" r="5.5" fill="var(--csa-c3)"/>
+        <circle class="csa-palette__blob csa-palette__blob--4" cx="68" cy="56" r="5"   fill="var(--csa-c4)"/>
+      </svg>
+      <svg class="csa-drop csa-drop--1" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c1)"/></svg>
+      <svg class="csa-drop csa-drop--2 csa-mobile-hide" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c2)"/></svg>
+      <svg class="csa-drop csa-drop--3" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c3)"/></svg>
+      <svg class="csa-drop csa-drop--4 csa-mobile-hide" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c4)"/></svg>
+      <svg class="csa-drop csa-drop--5" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c5)"/></svg>
+      <svg class="csa-drop csa-drop--6 csa-mobile-hide" viewBox="0 0 16 22" xmlns="http://www.w3.org/2000/svg"><path d="M8 1 C 4 9 1.5 15 8 21 C 14.5 15 12 9 8 1 Z" fill="var(--csa-c2)"/></svg>
+      <span class="csa-particle csa-particle--1"></span>
+      <span class="csa-particle csa-particle--2 csa-mobile-hide"></span>
+      <span class="csa-particle csa-particle--3"></span>
+      <span class="csa-particle csa-particle--4 csa-mobile-hide"></span>
+      <span class="csa-particle csa-particle--5"></span>
+      <span class="csa-particle csa-particle--6 csa-mobile-hide"></span>
+      <span class="csa-particle csa-particle--7"></span>
+      <span class="csa-particle csa-particle--8 csa-mobile-hide"></span>
+      <span class="csa-particle csa-particle--9"></span>
+      <span class="csa-particle csa-particle--10 csa-mobile-hide"></span>
+      <span class="csa-particle csa-particle--11"></span>
+      <span class="csa-particle csa-particle--12 csa-mobile-hide"></span>
+    </div>
+
+    <!-- React Root -->
+    <div id="root">
+      <div class="cs-initial-loader" aria-hidden="true">
+        <div class="cs-initial-loader__dot"></div>
+      </div>
+    </div>
+    
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: sans-serif;">
+        <h1>JavaScript is required</h1>
+        <p>Please enable JavaScript to view ColourSplash Studio.</p>
+      </div>
+    </noscript>
+    
+    <script type="module" src="/src/entries/admin.tsx"></script>
+    
+    <script>
+      // Register service worker for repeat-visit speed and offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () { });
+        });
+      }
+
+      // Page Visibility API to pause animations when tab is hidden
+      (function () {
+        var ambient = document.querySelector('.csa-ambient');
+        if (!ambient) return;
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) {
+            ambient.classList.add('csa-paused');
+          } else {
+            ambient.classList.remove('csa-paused');
+          }
+        }, { passive: true });
+      })();
+    </script>
+  </body>
+</html>
